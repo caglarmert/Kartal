@@ -16,4 +16,3 @@ Project Directory
   ├── jsbsim
   └── main.py
 ```
-```
