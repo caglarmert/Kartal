@@ -12,8 +12,8 @@ File Structure:
 
 ```
 Project Directory
-├── gym_jsbsim
-├── jsbsim
-├── main.py
+  ├── gym_jsbsim
+  ├── jsbsim
+  └── main.py
 ```
 ```
