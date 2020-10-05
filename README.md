@@ -6,7 +6,7 @@
 
 Following steps will guide through RL agent training using JSBSim FDM
 
-1. Install python with requirements.txt (pip install -r requirements.txt)
+1. Install python (I have 3.7.9) with requirements.txt (pip install -r requirements.txt)
 2. (Optional) Install flightgear 2018.3.6 and add bin directory to the PATH environmental variable (for FG visualizations only)
 3. Go the project directory and use 'python train.py' or 'python main.py'
 4. Edit train.py file to manage and change train parameters (training length, algorithm, learning rate etc.)
