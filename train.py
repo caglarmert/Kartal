@@ -17,7 +17,7 @@ from stable_baselines import logger
 # to generate the kind of logs that I want.
 logger.configure()
 
-env = gym.make('JSBSim-TurnHeadingControlTask-Cessna172P-Shaping.STANDARD-NoFG-v0')
+env = gym.make('JSBSim-HeadingControlTask-Cessna172P-Shaping.STANDARD-NoFG-v0')
 env = DummyVecEnv([lambda: env])
 
 # the noise objects for DDPG
@@ -26,22 +26,22 @@ param_noise = None
 action_noise = OrnsteinUhlenbeckActionNoise(mean=np.zeros(n_actions), sigma=float(0.5) * np.ones(n_actions))
 
 try:
-    model = DDPG.load("model/ddpg_fg_turnheading", env=env, tensorboard_log="model/tensorboard/")
+    model = DDPG.load("model/ddpg_fg_heading", env=env, tensorboard_log="model/tensorboard/")
     model.set_env( env )
     print("Model exists")
 
 except ValueError:  # Model doesn't exist
     print("Model doesn't exists, training new one")
     model = DDPG(MlpPolicy, env, verbose=1, param_noise=param_noise, action_noise=action_noise, normalize_observations=True, tensorboard_log="model/tensorboard/")
-    model.learn(total_timesteps=2e4)
-    model.save("model/ddpg_fg_turnheading")
+    model.learn(total_timesteps=1e6)
+    model.save("model/ddpg_fg_heading")
 
 
-env = gym.make('JSBSim-TurnHeadingControlTask-Cessna172P-Shaping.STANDARD-FG-v0')
+env = gym.make('JSBSim-HeadingControlTask-Cessna172P-Shaping.STANDARD-FG-v0')
 env.reset()
 done = False
 
 while True:
    action = env.action_space.sample()
    state, reward, done, _ = env.step(action)
-   env.render(mode='flightgear')
+   env.render(mode='human')
