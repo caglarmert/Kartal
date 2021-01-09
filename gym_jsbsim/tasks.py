@@ -236,13 +236,14 @@ class HeadingControlTask(FlightTask):
     INITIAL_HEADING_DEG = 90
     TARGET_HEADING_DEG = 95
     DEFAULT_EPISODE_TIME_S = 60.
-    ALTITUDE_SCALING_FT = 150
-    TRACK_ERROR_SCALING_DEG = 8
+    ALTITUDE_SCALING_FT = 50
+    TRACK_ERROR_SCALING_DEG = 1
     ROLL_ERROR_SCALING_RAD = 0.15  # approx. 8 deg
     ROLL_ERROR_DEVIATION_RAD = 1.6  # approx. 8 deg
     SIDESLIP_ERROR_SCALING_DEG = 3.
     MIN_STATE_QUALITY = 0.8  # terminate if state 'quality' is less than this
     MAX_ALTITUDE_DEVIATION_FT = 1000  # terminate if altitude error exceeds this
+    VERBOSE = False
     target_track_deg = BoundedProperty('target/track-deg', 'desired heading [deg]',
                                        prp.heading_deg.min, prp.heading_deg.max)
     track_error_deg = BoundedProperty('error/track-error-deg',
@@ -315,7 +316,7 @@ class HeadingControlTask(FlightTask):
                                                            target=0.0,
                                                            is_potential_based=True,
                                                            scaling_factor=self.SIDESLIP_ERROR_SCALING_DEG)
-            potential_based_components = (wings_level, no_sideslip)
+            potential_based_components = (no_sideslip)
 
         if shaping is Shaping.EXTRA:
             return assessors.AssessorImpl(base_components, potential_based_components,
@@ -323,7 +324,7 @@ class HeadingControlTask(FlightTask):
         elif shaping is Shaping.EXTRA_SEQUENTIAL:
             altitude_error, travel_direction = base_components
             # make the wings_level shaping reward dependent on facing the correct direction
-            dependency_map = {wings_level: (travel_direction,)}
+            dependency_map = {no_sideslip: (travel_direction,)}
             return assessors.ContinuousSequentialAssessor(base_components, potential_based_components,
                                                           potential_dependency_map=dependency_map,
                                                           positive_rewards=self.positive_rewards)
@@ -366,12 +367,15 @@ class HeadingControlTask(FlightTask):
         terminal_step = sim[self.steps_left] <= 0
         state_quality = sim[self.last_assessment_reward]
         state_out_of_bounds = state_quality < self.MIN_STATE_QUALITY  # TODO: issues if sequential?
-        if state_out_of_bounds:
-            print("state out of bounds")
-        if self._altitude_out_of_bounds(sim):
-            print("Altitude out of bounds")
-        if self._roll_out_of_bounds(sim):
-            print("Roll out of bounds")
+        if self.VERBOSE:
+            if state_out_of_bounds:
+                print("state out of bounds")
+            elif self._altitude_out_of_bounds(sim):
+                print("Altitude out of bounds")
+            elif self._roll_out_of_bounds(sim):
+                print("Roll out of bounds")
+            else:
+                pass
         return terminal_step or state_out_of_bounds or self._altitude_out_of_bounds(sim) or self._roll_out_of_bounds(sim)
 
     def _altitude_out_of_bounds(self, sim: Simulation) -> bool:

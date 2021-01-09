@@ -33,7 +33,7 @@ try:
 except ValueError:  # Model doesn't exist
     print("Model doesn't exists, training new one")
     model = DDPG(MlpPolicy, env, verbose=1, param_noise=param_noise, action_noise=action_noise, normalize_observations=True, tensorboard_log="model/tensorboard/")
-    model.learn(total_timesteps=3e5)
+    model.learn(total_timesteps=3e6)
     model.save("model/ppo_fg_heading")
     print("model saved")
 
