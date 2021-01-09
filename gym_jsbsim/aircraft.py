@@ -16,4 +16,4 @@ class Aircraft(collections.namedtuple('Aircraft', ['jsbsim_id', 'flightgear_id',
 
 
 f15 = Aircraft('f15', 'f15c', 'F15', 220)   # observed speed at engine settings used alt = 5k ft
-f16 = Aircraft('f16', 'f16', 'F16', 220)   # observed speed at engine settings used alt = 5k ft
+f16 = Aircraft('f16', 'f16', 'F16', 500)   # observed speed at engine settings used alt = 5k ft

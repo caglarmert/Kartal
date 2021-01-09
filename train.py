@@ -33,7 +33,7 @@ try:
 except ValueError:  # Model doesn't exist
     print("Model doesn't exists, training new one")
     model = DDPG(MlpPolicy, env, verbose=1, param_noise=param_noise, action_noise=action_noise, normalize_observations=True, tensorboard_log="model/tensorboard/")
-    model.learn(total_timesteps=1e6)
+    model.learn(total_timesteps=3e5)
     model.save("model/ppo_fg_heading")
     print("model saved")
 
@@ -46,4 +46,6 @@ done = False
 while True:
    action = env.action_space.sample()
    state, reward, done, _ = env.step(action)
+   if done:
+       env.reset()
    env.render(mode='human')
