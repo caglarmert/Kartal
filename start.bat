@@ -1,0 +1,1 @@
+..\kartalenv\scripts\activate

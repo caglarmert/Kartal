@@ -1,7 +1,7 @@
 import gym.envs.registration
 import enum
 from gym_jsbsim.tasks import Task, HeadingControlTask, TurnHeadingControlTask
-from gym_jsbsim.aircraft import Aircraft, cessna172P
+from gym_jsbsim.aircraft import Aircraft, f16
 from gym_jsbsim import utils
 
 """

@@ -2,7 +2,7 @@ import gym
 import gym_jsbsim
 import os
 
-env = gym.make('JSBSim-TurnHeadingControlTask-Cessna172P-Shaping.STANDARD-FG-v0')
+env = gym.make('JSBSim-TurnHeadingControlTask-F16-Shaping.STANDARD-FG-v0')
 
 env.reset()
 done = False
